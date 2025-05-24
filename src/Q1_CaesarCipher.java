@@ -3,6 +3,7 @@
 import java.util.Scanner;
 
 public class Q1_CaesarCipher {
+
     public static void main(String[] args) {
 
         //Program Declaration
@@ -19,38 +20,34 @@ public class Q1_CaesarCipher {
 
         //Executing encryption and decryption methods
         System.out.println("Plain Text: " + plainText);
-        String cipherText = encrypt(plainText, shift).toString();
+        String cipherText = encrypt(plainText, shift);
         System.out.println("Cipher Text: " + cipherText);
-        String decryptedText = decrypt(cipherText, shift).toString();
+        String decryptedText = decrypt(cipherText, shift);
         System.out.println("Decrypted Text: " + decryptedText);
 
     }
 
-    //Encryption method
-    public static StringBuilder encrypt(String plainText, int shift) {
-        StringBuilder cipherText = new StringBuilder();
-        for (int i = 0; i < plainText.length(); i++) {
-            char c = plainText.charAt(i);
-            if (Character.isLetter(c)) {
-                char base = Character.isLowerCase(c) ? 'a' : 'A';
-                c = (char) ((c - base + shift) % 26 + base);
+    public static String encrypt(String plainText, int shift) {
+        StringBuilder encryptedText = new StringBuilder();
+        for (char ch : plainText.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char base = Character.isLowerCase(ch) ? 'a' : 'A';
+                ch = (char) ((ch - base + shift) % 26 + base);
             }
-            cipherText.append(c);
+            encryptedText.append(ch);
         }
-        return cipherText;
+        return encryptedText.toString();
     }
 
-    //Decryption method
-    public static StringBuilder decrypt(String cipherText, int shift) {
-        StringBuilder plainText = new StringBuilder();
-        for (int i = 0; i < cipherText.length(); i++) {
-            char c = cipherText.charAt(i);
-            if (Character.isLetter(c)) {
-                char base = Character.isLowerCase(c) ? 'a' : 'A';
-                c = (char) ((c - base - shift + 26) % 26 + base);
+    public static String decrypt(String cipherText, int shift) {
+        StringBuilder decryptedText = new StringBuilder();
+        for (char ch : cipherText.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char base = Character.isLowerCase(ch) ? 'a' : 'A';
+                ch = (char) ((ch - base - shift + 26) % 26 + base);
             }
-            plainText.append(c);
+            decryptedText.append(ch);
         }
-        return plainText;
+        return decryptedText.toString();
     }
 }

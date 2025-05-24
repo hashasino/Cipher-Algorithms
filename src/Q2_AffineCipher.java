@@ -3,6 +3,7 @@
 import java.util.Scanner;
 
 public class Q2_AffineCipher {
+
     public static void main(String[] args) {
 
         //Program Declaration
@@ -39,38 +40,39 @@ public class Q2_AffineCipher {
 
         //Executing encryption and decryption methods
         System.out.println("Plain Text: " + plainText);
-        String cipherText = encrypt(plainText, multiplier, shift).toString();
+        String cipherText = encrypt(plainText, multiplier, shift);
         System.out.println("Cipher Text: " + cipherText);
-        String decryptedText = decrypt(cipherText, multiplier, shift).toString();
+        String decryptedText = decrypt(cipherText, multiplier, shift);
         System.out.println("Decrypted Text: " + decryptedText);
     }
 
-    //Encryption method
-    public static StringBuilder encrypt(String plainText, int multiplier, int shift) {
-        StringBuilder cipherText = new StringBuilder();
-        for (int i = 0; i < plainText.length(); i++) {
-            char c = plainText.charAt(i);
-            if (Character.isLetter(c)) {
-                char base = Character.isLowerCase(c) ? 'a' : 'A';
-                c = (char) ((multiplier * (c - base) + shift) % 26 + base);
+    public static String encrypt(String plainText, int multiplier, int shift) {
+        StringBuilder encryptedText = new StringBuilder();
+        for (char ch : plainText.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char base = Character.isLowerCase(ch) ? 'a' : 'A';
+                ch = (char) ((multiplier * (ch - base) + shift) % 26 + base);
             }
-            cipherText.append(c);
+            encryptedText.append(ch);
         }
-        return cipherText;
+        return encryptedText.toString();
     }
 
-    //Decryption method
-    public static StringBuilder decrypt(String cipherText, int multiplier, int shift) {
-        StringBuilder plainText = new StringBuilder();
-        for (int i = 0; i < cipherText.length(); i++) {
-            char c = cipherText.charAt(i);
-            if (Character.isLetter(c)) {
-                char base = Character.isLowerCase(c) ? 'a' : 'A';
-                c = (char) ((modInverse(multiplier) * ((c - base - shift + 26) % 26)) % 26 + base);
+    public static String decrypt(String cipherText, int multiplier, int shift) {
+        StringBuilder decryptedText = new StringBuilder();
+        for (char ch : cipherText.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char base = Character.isLowerCase(ch) ? 'a' : 'A';
+                ch = (char) (modInverse(multiplier) * (ch - base - shift + 26) % 26 + base);
             }
-            plainText.append(c);
+            decryptedText.append(ch);
         }
-        return plainText;
+        return decryptedText.toString();
+    }
+
+    // Function to check if a number is coprime with 26
+    public static boolean isCoprime(int a) {
+        return GCD(a, 26) == 1;
     }
 
     // Function to calculate modular inverse of a number under mod 26
@@ -85,11 +87,6 @@ public class Q2_AffineCipher {
     public static int GCD(int a, int b) {
         if (b == 0) return a;
         return GCD(b, a % b);
-    }
-
-    // Function to check if a number is coprime with 26
-    public static boolean isCoprime(int a) {
-        return GCD(a, 26) == 1;
     }
 
 }
