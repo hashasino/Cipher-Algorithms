@@ -1,15 +1,13 @@
-// Q8. W.A.P. to implement Simple Columnar Transposition technique.
+// Q9. W.A.P. to implement Advanced Columnar Transposition technique.
 
 import java.util.*;
 
-public class Q8_SimpleColumnarTransposition {
+public class Q7_AdvancedColumnarTransposition {
 
-    // Method to sort the key and return the order of columns
+    // Generate column order from key
     private static int[] getKeyOrder(String key) {
         Character[] keyChars = new Character[key.length()];
-        for (int i = 0; i < key.length(); i++) {
-            keyChars[i] = key.charAt(i);
-        }
+        for (int i = 0; i < key.length(); i++) keyChars[i] = key.charAt(i);
 
         Character[] sortedKey = keyChars.clone();
         Arrays.sort(sortedKey);
@@ -17,9 +15,9 @@ public class Q8_SimpleColumnarTransposition {
         int[] order = new int[key.length()];
         for (int i = 0; i < key.length(); i++) {
             for (int j = 0; j < key.length(); j++) {
-                if (keyChars[i] == sortedKey[j]) {
+                if (sortedKey[j] != null && keyChars[i] == sortedKey[j]) {
                     order[i] = j;
-                    sortedKey[j] = null; // Avoid duplicate assignment
+                    sortedKey[j] = null;
                     break;
                 }
             }
@@ -27,22 +25,24 @@ public class Q8_SimpleColumnarTransposition {
         return order;
     }
 
-    // Encryption
-    public static String encrypt(String plaintext, String key) {
-        plaintext = plaintext.replaceAll("\\s+", "").toUpperCase();
+    // Single round encryption
+    private static String columnarEncrypt(String text, String key) {
+        text = text.replaceAll("\\s+", "").toUpperCase();
         int col = key.length();
-        int row = (int) Math.ceil((double) plaintext.length() / col);
+        int row = (int) Math.ceil((double) text.length() / col);
         char[][] matrix = new char[row][col];
 
+        // Fill matrix row-wise
         int idx = 0;
-        for (int i = 0; i < row && idx < plaintext.length(); i++) {
-            for (int j = 0; j < col && idx < plaintext.length(); j++) {
-                matrix[i][j] = plaintext.charAt(idx++);
+        for (int i = 0; i < row && idx < text.length(); i++) {
+            for (int j = 0; j < col && idx < text.length(); j++) {
+                matrix[i][j] = text.charAt(idx++);
             }
         }
 
+        // Get column order
         int[] keyOrder = getKeyOrder(key);
-        StringBuilder cipherText = new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
         for (int k = 0; k < col; k++) {
             int colIndex = -1;
@@ -52,26 +52,26 @@ public class Q8_SimpleColumnarTransposition {
                     break;
                 }
             }
-
             for (int i = 0; i < row; i++) {
                 if (Character.isLetter(matrix[i][colIndex])) {
-                    cipherText.append(matrix[i][colIndex]);
+                    result.append(matrix[i][colIndex]);
                 }
             }
         }
 
-        return cipherText.toString();
+        return result.toString();
     }
 
-    // Decryption
-    public static String decrypt(String cipherText, String key) {
+    // Single round decryption
+    private static String columnarDecrypt(String text, String key) {
         int col = key.length();
-        int row = (int) Math.ceil((double) cipherText.length() / col);
+        int row = (int) Math.ceil((double) text.length() / col);
         char[][] matrix = new char[row][col];
 
         int[] keyOrder = getKeyOrder(key);
         int idx = 0;
 
+        // Fill columns according to key order
         for (int k = 0; k < col; k++) {
             int colIndex = -1;
             for (int j = 0; j < col; j++) {
@@ -81,21 +81,34 @@ public class Q8_SimpleColumnarTransposition {
                 }
             }
 
-            for (int i = 0; i < row && idx < cipherText.length(); i++) {
-                matrix[i][colIndex] = cipherText.charAt(idx++);
+            for (int i = 0; i < row && idx < text.length(); i++) {
+                matrix[i][colIndex] = text.charAt(idx++);
             }
         }
 
-        StringBuilder plainText = new StringBuilder();
+        // Read matrix row-wise
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (Character.isLetter(matrix[i][j])) {
-                    plainText.append(matrix[i][j]);
+                    result.append(matrix[i][j]);
                 }
             }
         }
 
-        return plainText.toString();
+        return result.toString();
+    }
+
+    // Advanced encryption (2 rounds)
+    public static String encrypt(String plaintext, String key) {
+        String firstRound = columnarEncrypt(plaintext, key);
+        return columnarEncrypt(firstRound, key); // 2nd round
+    }
+
+    // Advanced decryption (2 rounds)
+    public static String decrypt(String ciphertext, String key) {
+        String firstRound = columnarDecrypt(ciphertext, key);
+        return columnarDecrypt(firstRound, key); // 2nd round
     }
 
     // Main Method
@@ -105,8 +118,8 @@ public class Q8_SimpleColumnarTransposition {
         System.out.print("Enter Plaintext: ");
         String plaintext = sc.nextLine();
 
-        System.out.print("Enter Key (any word or number string): ");
-        String key = sc.nextLine();
+        System.out.print("Enter Key: ");
+        String key = sc.nextLine().toUpperCase();
 
         String encrypted = encrypt(plaintext, key);
         System.out.println("Encrypted Text: " + encrypted);

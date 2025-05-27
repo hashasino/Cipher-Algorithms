@@ -2,7 +2,7 @@
 
 import java.util.Scanner;
 
-public class Q11_AdvancedEuclideanAlgorithm {
+public class Q9_AdvancedEuclideanAlgorithm {
 
     // Structure to hold results
     static class Result {

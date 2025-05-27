@@ -7,19 +7,19 @@ public class Q1_CaesarCipher {
     public static void main(String[] args) {
 
         //Program Declaration
-        System.out.println("This program implements Caesar cipher cryptographic scheme. The methods only substitute letters/alphabets and ignore/skip any other characters.");
+        System.out.println("This program implements Caesar cipher cryptographic scheme. \nThe methods only substitute letters/alphabets and ignore/skip any other characters.");
 
         //Instantiating Scanner object
         Scanner scan = new Scanner(System.in);
 
         //Taking input for plainText & shift value
-        System.out.println("- Enter plain text: ");
+        System.out.println("\n- Enter plain text: ");
         String plainText = scan.nextLine();
         System.out.println("- Enter shift value (0-25): ");
         int shift = scan.nextInt() % 26;
 
         //Executing encryption and decryption methods
-        System.out.println("Plain Text: " + plainText);
+        System.out.println("\nPlain Text: " + plainText);
         String cipherText = encrypt(plainText, shift);
         System.out.println("Cipher Text: " + cipherText);
         String decryptedText = decrypt(cipherText, shift);

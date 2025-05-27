@@ -2,7 +2,7 @@
 
 import java.util.Scanner;
 
-public class Q10_EuclideanAlgorithm {
+public class Q8_EuclideanAlgorithm {
 
     // Method to compute GCD using Euclidean Algorithm
     public static int gcd(int a, int b) {

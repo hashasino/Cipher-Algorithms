@@ -2,7 +2,7 @@
 
 import java.util.Scanner;
 
-public class Q12_SimpleRSA_Algorithm {
+public class Q10_SimpleRSA_Algorithm {
 
     // Function to find GCD
     public static int gcd(int a, int b) {

@@ -9,13 +9,13 @@ public class Q3_PlayfairCipher {
     public static void main(String[] args) {
 
         //Program Declaration
-        System.out.println("This program implements Playfair cipher cryptographic scheme. The methods only substitute letters/alphabets and ignore/skip any other characters.");
+        System.out.println("This program implements Playfair cipher cryptographic scheme. \nThe methods only substitute letters/alphabets and ignore/skip any other characters.");
 
         //Instantiating Scanner object
         Scanner scan = new Scanner(System.in);
 
         //Taking input for plainText
-        System.out.println("- Enter plain text: ");
+        System.out.println("\n- Enter plain text: ");
         String plainText = scan.nextLine().toUpperCase().replaceAll("[^A-Z]", "").replace("J", "I");
 
         //Taking input for key
@@ -27,7 +27,7 @@ public class Q3_PlayfairCipher {
         printKeyMatrix();
 
         //Executing encryption and decryption methods
-        System.out.println("Plain Text: " + plainText);
+        System.out.println("\nPlain Text: " + plainText);
         String cipherText = encrypt(preparePlaintext(plainText));
         System.out.println("Cipher Text: " + cipherText);
         String decryptedText = decrypt(breakIntoPairs(cipherText));
